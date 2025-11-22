@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title><ui:insert name="izenburua">Ride Sharer App</ui:insert></title>
+    
+    <h:outputStylesheet library="css" name="style.css" />
+
+</h:head>
+
+<h:body>
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://www.comparabus.com/bundles/static/uploads/Blablacar/blablabus-bus-blablacar-autocar-autobus.png"
+             width="500" height="150" alt="Logo" />
+    </div>
+    
+    <h:panelGrid columns="2" border="1" cellpadding="0" cellspacing="0" 
+                 styleClass="main-layout-table"
+                 columnClasses="sidebar-column, content-column">
+        
+        <h:panelGroup layout="block">
+            <ui:insert name="menu">
+                <ui:include src="Menua.xhtml"/>
+            </ui:insert>
+        </h:panelGroup>
+        
+        <h:panelGroup layout="block">
+            <ui:insert name="gorputza">
+                </ui:insert>
+        </h:panelGroup>
+        
+    </h:panelGrid>
+    
+    <div class="footer-text">
+        <ui:insert name="orri-oina">
+            <h4>&#169; Software Ingeniaritza II</h4>
+        </ui:insert>
+    </div>
+
+</h:body>
+</html>

@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="create-ride-container">
+		<h:form>
+			<p:panel id="panel" header="Create New Ride"
+				styleClass="panel-bottom-margin">
+
+				<h:panelGrid columns="3" cellpadding="8">
+
+					<h:outputLabel value="Depart City:" styleClass="form-label" />
+					<h:inputText id="origin" value="#{createride.departCity}"
+						required="true" requiredMessage="Insert origin">
+						<f:validateLength minimum="2" />
+					</h:inputText>
+					<h:message for="origin" styleClass="error-message" />
+
+					<h:outputLabel value="Arrival City:" styleClass="form-label" />
+					<h:inputText id="destination" value="#{createride.arrivalCity}"
+						required="true" requiredMessage="Insert destiny" />
+					<h:message for="destination" styleClass="error-message" />
+
+					<h:outputLabel value="Number of Seats:" styleClass="form-label" />
+					<h:inputText id="seats" value="#{createride.numSeats}"
+						required="true" requiredMessage="Insert nº seats">
+						<f:validateLongRange minimum="1" maximum="8" />
+					</h:inputText>
+					<h:message for="seats" styleClass="error-message" />
+
+					<h:outputLabel value="Price (€):" styleClass="form-label" />
+					<h:inputText id="price" value="#{createride.price}" required="true"
+						requiredMessage="Insert price">
+						<f:validateDoubleRange minimum="0.0" />
+					</h:inputText>
+					<h:message for="price" styleClass="error-message" />
+
+					<h:outputLabel value="Ride Date:" styleClass="form-label" />
+					<p:calendar id="rideDate" value="#{createride.rideDate}"
+						pattern="dd/MM/yyyy" required="true"
+						requiredMessage="Select a date" navigator="true" mode="popup"
+						showOn="button" mindate="#{createride.minDate}" />
+					<h:message for="rideDate" styleClass="error-message" />
+				</h:panelGrid>
+
+				<p:separator />
+
+				<div class="center-buttons" style="text-align: center;">
+					<p:commandButton value="Create Ride"
+						action="#{createride.createRide}" update="@form"
+						icon="pi pi-plus-circle"
+						style="margin-right: 20px;" 
+						styleClass="ui-button-primary btn-wide" />
+
+					<p:commandButton value="Back to Main" action="main"
+						immediate="true" icon="pi pi-arrow-left"
+						styleClass="ui-button-secondary btn-wide" />
+				</div>
+
+				<p:messages id="messages" showDetail="true" globalOnly="true"
+					closable="true" style="margin-top: 20px;">
+					<p:autoUpdate />
+				</p:messages>
+
+			</p:panel>
+		</h:form>
+	</div>
+</ui:composition>

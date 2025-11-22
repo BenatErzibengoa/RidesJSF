@@ -1,0 +1,80 @@
+/* --- GENERAL & LAYOUT --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Esta clase asegura que la tabla principal esté centrada y tenga ancho */
+.main-layout-table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse; /* Quita espacios feos entre celdas */
+}
+
+/* ESTA es la clave para que el menú tenga fondo gris */
+.sidebar-column {
+    width: 200px; 
+    background-color: #f0f0f0; /* El color gris de fondo */
+    color: #333; 
+    vertical-align: top;
+    padding: 0; /* Para que el menú llegue a los bordes */
+}
+
+.content-column {
+    width: 100%; 
+    vertical-align: top; 
+    padding: 15px;
+    background-color: #fff;
+}
+
+.footer-text {
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* --- MENU (El diseño bonito que te gusta) --- */
+.menu-title {
+    color: #333;
+    padding: 10px;
+    margin: 0 0 10px 0;
+    border-bottom: 2px solid #1e88e5; /* Línea azul profesional */
+    font-size: 1.1em;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    padding: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Enlaces del menú */
+.menu-list a {
+    text-decoration: none;
+    color: #1e88e5; /* Color azul bonito */
+    font-weight: bold;
+    display: block;
+    padding: 8px 10px;
+    transition: background-color 0.3s;
+}
+
+/* Efecto al pasar el ratón */
+.menu-list a:hover {
+    background-color: #e3f2fd; /* Fondo azul claro */
+    color: #0d47a1;
+    border-radius: 0;
+}
+.fieldset-spacer {
+    margin-bottom: 20px;
+}
+
+/* --- RESTO DE ESTILOS (Botones, tablas, etc.) --- */
+.ui-button-primary { background: #1e88e5 !important; border-color: #1e88e5 !important; }
+.btn-wide { width: 250px !important; padding: 10px !important; }
+.center-buttons { text-align: center; margin-top:15px; }
+.rides-table { width: 100%; text-align: center; }

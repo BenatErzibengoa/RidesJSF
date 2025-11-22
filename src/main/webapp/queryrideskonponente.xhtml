@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:form id="queryForm">
+        
+        <p:panel header="Search Available Rides" styleClass="query-panel-margin">
+            <h:panelGrid columns="2" cellpadding="10">
+                <h:outputLabel value="Depart City:" styleClass="form-label" />
+                <p:selectOneMenu id="originCombo" value="#{queryrides.selectedOrigin}" styleClass="combo-box">
+                    <f:selectItem itemLabel="Select City..." itemValue=""/>
+                    <f:selectItems value="#{queryrides.departCities}"/>
+                    <p:ajax listener="#{queryrides.onOriginChange}" update="destinationCombo ridesTable messages"/>
+                </p:selectOneMenu>
+
+                <h:outputLabel value="Arrival City:" styleClass="form-label" />
+                <p:selectOneMenu id="destinationCombo" value="#{queryrides.selectedDestination}" styleClass="combo-box">
+                     <f:selectItem itemLabel="Select City..." itemValue=""/>
+                     <f:selectItems value="#{queryrides.destinationCities}"/>
+                     <p:ajax update="ridesTable messages"/> 
+                </p:selectOneMenu>
+                
+                <h:outputLabel value="Ride Date:" styleClass="form-label" />
+                <p:calendar id="rideDate" value="#{queryrides.selectedDate}" navigator="true" mode="popup" showOn="button" pattern="dd/MM/yyyy" mindate="#{queryrides.minDate}">
+                    <p:ajax event="dateSelect" listener="#{queryrides.onDateSelect}" update="ridesTable"/> 
+                </p:calendar>
+
+            </h:panelGrid>
+
+            <br/>
+            <p:commandButton value="Find Rides" action="#{queryrides.searchRides}" 
+                             icon="pi pi-search" 
+                             styleClass="ui-button-primary btn-wide" 
+                             update="ridesTable"/> 
+        </p:panel>
+
+        <p:dataTable id="ridesTable" value="#{queryrides.foundRides}" var="ride" 
+                     emptyMessage="No rides found for these criteria."
+                     border="1" paginator="true" rows="5"
+                     paginatorPosition="bottom" styleClass="rides-table">
+            
+            <f:facet name="header">Available Rides List</f:facet>
+            <p:column headerText="Date">
+                <h:outputText value="#{ride.date}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="From"><h:outputText value="#{ride.from}" /></p:column>
+            <p:column headerText="To"><h:outputText value="#{ride.to}" /></p:column>
+            <p:column headerText="Seats"><h:outputText value="#{ride.nPlaces}" /></p:column>
+            <p:column headerText="Price"><h:outputText value="#{ride.price} €" /></p:column>
+            
+        </p:dataTable>
+        
+        <br/>
+        <div class="center-buttons">
+            <p:commandButton value="Back to Main" action="main" immediate="true" 
+                             icon="pi pi-arrow-left"
+                             styleClass="ui-button-secondary btn-wide"/>
+        </div>
+        
+        <br/>
+        <h:messages id="messages" globalOnly="true" styleClass="global-messages" />
+
+    </h:form>
+</ui:composition>
