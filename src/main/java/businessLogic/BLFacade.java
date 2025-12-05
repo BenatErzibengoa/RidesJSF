@@ -3,6 +3,7 @@ package businessLogic;
 import java.util.Date;
 import java.util.List;
 
+import eredua.domain.Profile;
 import eredua.domain.Ride;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
@@ -64,6 +65,14 @@ public interface BLFacade  {
 	 * @return collection of rides
 	 */
 	public List<Date> getThisMonthDatesWithRides(String from, String to, Date date);
+	
+	
+	/*
+	 * This method registers a user, either they are a Traveller or Driver
+	 * @return Profile from database
+	 */
+    public Profile register(String email, String name, String password, String type);
+    
 	
 	/**
 	 * This method calls the data access to initialize the database with some events and questions.

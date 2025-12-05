@@ -12,7 +12,10 @@ import javax.persistence.TypedQuery;
 import configuration.UtilDate;
 import eredua.JPAUtil;
 import eredua.domain.Driver;
+import eredua.domain.Profile;
 import eredua.domain.Ride;
+import eredua.domain.Traveller;
+import eredua.factory.ProfileFactory;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
 
@@ -72,7 +75,7 @@ public class HibernateDataAccess {
 		
 		
 	        // Option 1: Create a dummy driver for testing
-	        Driver gid = new Driver(driverEmail, "Test Driver");
+	        Driver gid = new Driver(driverEmail, "Test Driver", "12345678");
 	        em.persist(gid);
 	        
 	        // Option 2: Stop execution if this is strictly logic
@@ -166,6 +169,65 @@ public class HibernateDataAccess {
 		}
 		return result;
 	}
+    
+    
+    
+    //Register
+    public Profile register(String email, String name, String password, String type) {
+		EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Profile existitzenDa = em.find(Profile.class, email);
+            
+            if (existitzenDa != null) {
+                System.out.println("Erabiltzailea existitzen da! " + email);
+                return null;
+            }
+
+            Profile newUser = ProfileFactory.createProfile(type, email, name, password);
+
+            em.persist(newUser);
+            em.getTransaction().commit();
+            System.out.println("Ondo gorde da: " + email + " como " + type);
+            
+            return newUser;
+
+        } catch (Exception e) {
+            if (em.getTransaction() != null && em.getTransaction().isActive()) {
+            	em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+    
+    // Login
+    public Profile login(String email, String password) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            Profile p = em.find(Profile.class, email);
+            if (p != null && p.getPassword().equals(password)) {
+                return p;
+            } else {
+                System.out.println("Kredentzial desegokiak: Logina ez da gauzatu");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+    
+    
 
     public void initializeDB() {
 		EntityManager em = JPAUtil.getEntityManager();
@@ -182,9 +244,14 @@ public class HibernateDataAccess {
 			}
 
 			// Create drivers
-			Driver driver1 = new Driver("driver1@gmail.com", "Aitor Fernandez");
-			Driver driver2 = new Driver("driver2@gmail.com", "Ane Gaztañaga");
-			Driver driver3 = new Driver("driver3@gmail.com", "Test driver");
+			Driver driver1 = new Driver("driver1@gmail.com", "Aitor Fernandez", "a");
+			Driver driver2 = new Driver("driver2@gmail.com", "Ane Gaztañaga", "a");
+			Driver driver3 = new Driver("driver3@gmail.com", "Test driver", "a");
+			
+			Traveller traveller1 = new Traveller("traveller1@gmail.com", "Beñat Ercibengoa", "b");
+			Traveller traveller2 = new Traveller("traveller2@gmail.com", "Jon Portu", "b");
+			Traveller traveller3 = new Traveller("traveller2@gmail.com", "Jon Elizetxea", "b");
+
 
 			// Create rides
 			driver1.addRide("Donostia", "Bilbo", UtilDate.newDate(year, month, 15), 4, 7);

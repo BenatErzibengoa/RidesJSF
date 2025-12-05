@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 
 import dataAccess.HibernateDataAccess;
+import eredua.domain.Profile;
 import eredua.domain.Ride;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
@@ -50,6 +51,11 @@ public class BLFacadeImplementation  implements BLFacade {
 		List<Date>  dates=dbManager.getThisMonthDatesWithRides(from, to, date);
 		return dates;
 	}
+	
+    public Profile register(String email, String name, String password, String type) {
+    	Profile p = dbManager.register(email, name, password, type);
+    	return p;
+    }
 	 
 	 public void initializeBD(){
 		dbManager.initializeDB();
