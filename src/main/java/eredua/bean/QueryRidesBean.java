@@ -1,4 +1,4 @@
-package bean; 
+package eredua.bean; 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +15,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
     
 import businessLogic.BLFacade;
-import domain.Ride;
+import eredua.domain.Ride;
 
 
 @Named("queryrides")

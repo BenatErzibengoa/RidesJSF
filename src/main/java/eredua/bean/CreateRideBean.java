@@ -1,4 +1,4 @@
-package bean;
+package eredua.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import businessLogic.BLFacade;
-import domain.Driver;
+import eredua.domain.Driver;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
 import jakarta.enterprise.context.SessionScoped;

@@ -1,0 +1,60 @@
+package businessLogic;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+
+
+import dataAccess.HibernateDataAccess;
+import eredua.domain.Ride;
+import exceptions.RideMustBeLaterThanTodayException;
+import exceptions.RideAlreadyExistException;
+
+/*
+	It implements the business logic as a web service.
+*/
+public class BLFacadeImplementation  implements BLFacade {
+	HibernateDataAccess dbManager;
+
+	public BLFacadeImplementation()  {		
+		System.out.println("Creating BLFacadeImplementation instance");
+		    dbManager=new HibernateDataAccess();
+	}
+	
+    public BLFacadeImplementation(HibernateDataAccess da)  {
+		System.out.println("Creating BLFacadeImplementation instance with HibernateDataAccess parameter");		
+		dbManager=da;		
+	}
+    
+    public List<String> getDepartCities(){		
+		List<String> departLocations=dbManager.getDepartCities();				
+		return departLocations;
+    	
+    }
+
+    public List<String> getDestinationCities(String from){		
+		 List<String> targetCities=dbManager.getArrivalCities(from);				
+		return targetCities;
+	}
+	 
+   public Ride createRide( String from, String to, Date date, int nPlaces, float price, String driverEmail ) throws RideMustBeLaterThanTodayException, RideAlreadyExistException{
+	   	Ride ride=dbManager.createRide(from, to, date, nPlaces, price, driverEmail);		
+		return ride;
+   };
+	
+	public List<Ride> getRides(String from, String to, Date date){
+		List<Ride>  rides=dbManager.getRides(from, to, date);
+		return rides;
+	}
+
+	public List<Date> getThisMonthDatesWithRides(String from, String to, Date date){
+		List<Date>  dates=dbManager.getThisMonthDatesWithRides(from, to, date);
+		return dates;
+	}
+	 
+	 public void initializeBD(){
+		dbManager.initializeDB();
+	}
+
+}
+
+
