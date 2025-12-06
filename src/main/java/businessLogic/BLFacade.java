@@ -73,6 +73,14 @@ public interface BLFacade  {
 	 */
     public Profile register(String email, String name, String password, String type);
     
+    
+	/*
+	 * This method return the user that matches with given credentials. It returns null if there is not any coincidence
+	 * @return Profile from database
+	 */
+    public Profile login(String email, String password);
+
+    
 	
 	/**
 	 * This method calls the data access to initialize the database with some events and questions.

@@ -56,6 +56,12 @@ public class BLFacadeImplementation  implements BLFacade {
     	Profile p = dbManager.register(email, name, password, type);
     	return p;
     }
+    
+    public Profile login(String email, String password) {
+    	Profile p = dbManager.login(email, password);
+    	return p;
+    }
+
 	 
 	 public void initializeBD(){
 		dbManager.initializeDB();

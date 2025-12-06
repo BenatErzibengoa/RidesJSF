@@ -7,18 +7,17 @@
     <h:form>
         <p:panel header="Login" styleClass="login-panel">
 
-            <div class="login-warning">
-                Login atala ez da inplementatu oraindik
-            </div>
             <p:messages id="messages" globalOnly="true" closable="true" />
 
             <p:panelGrid columns="3" styleClass="ui-panelgrid-blank full-width">
 
-                <p:outputLabel for="username" value="User:" />
-                <p:inputText id="username" styleClass="full-width-input"
-                             required="true" requiredMessage="User field is required" 
-                             value="#{login.username}"/> 
-                <p:message for="username" /> 
+                <p:outputLabel for="email" value="Email:" />
+                
+                <p:inputText id="email" styleClass="full-width-input"
+                             required="true" requiredMessage="Email is required" 
+                             value="#{login.email}"/> 
+                             
+                <p:message for="email" /> 
 
                 <p:outputLabel for="password" value="Password:" />
                 <p:password id="password" styleClass="full-width-input"
@@ -39,7 +38,7 @@
             
             <f:facet name="footer">
                 <p:commandButton value="Login" 
-                                 action="#{login.authenticate}" icon="pi pi-sign-in" 
+                                 action="#{login.login}" icon="pi pi-sign-in" 
                                  styleClass="ui-button-success" />
             </f:facet>
             

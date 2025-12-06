@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf17650424834891" configfile="/RidesJSF/src/main/webapp/WEB-INF/facelets/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="register.xhtml" x="132" y="144" id="pf17650426261032" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf17650426261033" path="/register.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="324" y="144" id="pf17650426261034" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf17650426261033" path="/login.xhtml"/>
+  <links id="pf17650426261033" target="pf17650426261034" source="pf17650426261032" outcome="ok" redirect="true"/>
+</pageflow:Pageflow>

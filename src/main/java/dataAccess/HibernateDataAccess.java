@@ -189,7 +189,7 @@ public class HibernateDataAccess {
 
             em.persist(newUser);
             em.getTransaction().commit();
-            System.out.println("Ondo gorde da: " + email + " como " + type);
+            System.out.println("Ondo gorde da: " + email + " (" + type + ")");
             
             return newUser;
 
