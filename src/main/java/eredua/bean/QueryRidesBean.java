@@ -18,6 +18,7 @@ import jakarta.faces.context.FacesContext;
 import businessLogic.BLFacade;
 import eredua.domain.Profile;
 import eredua.domain.Ride;
+import eredua.domain.Traveller;
 
 
 @Named("queryrides")
@@ -63,11 +64,21 @@ public class QueryRidesBean implements Serializable {
 
     public String searchRides() {
         if (selectedOrigin != null && selectedDestination != null && selectedDate != null) {
-            
-            foundRides = facadeBL.getRides(selectedOrigin, selectedDestination, selectedDate);
-            
-            if (foundRides.isEmpty()) {
-                // Rides ez --> errore mezua
+            List<Ride> rides = facadeBL.getRides(selectedOrigin, selectedDestination, selectedDate);
+            if(user.isLoggedIn() && user.getUser() != null && user.isTraveler()) {
+            	String currentUserEmail = user.getEmail();
+            	rides.removeIf(ride -> {
+                    for (Traveller t : ride.getTravellers()) {
+                        if (t.getEmail().equals(currentUserEmail)) {
+                            return true; 
+                        }
+                    }
+                    return false;
+                });
+            }
+        	foundRides = rides;
+
+            if (rides.isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null, 
                     new FacesMessage("Rides not found for these credentials"));
             }
@@ -75,8 +86,7 @@ public class QueryRidesBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "Please select origin, destination and date.", null));
         }
-        
-        return null; // Errorea --> ez egin ezer
+        return null; 
     }
 
     public void onOriginChange() {
