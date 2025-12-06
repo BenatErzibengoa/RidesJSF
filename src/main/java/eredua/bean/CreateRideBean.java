@@ -13,6 +13,7 @@ import exceptions.RideMustBeLaterThanTodayException;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named("createride")
@@ -27,6 +28,9 @@ public class CreateRideBean implements Serializable {
 	
 	private Driver driver;
 	
+	 @Inject 
+	    private UserBean user;
+	
 	public CreateRideBean() {
         // Beharrezkoa
     }
@@ -34,8 +38,7 @@ public class CreateRideBean implements Serializable {
 	public String createRide() {
         try {
             BLFacade facade = FacadeBean.getBusinessLogic();
-            String driverEmail = "driver1@gmail.com"; 
-            facade.createRide(departCity, arrivalCity, rideDate, numSeats, price, driverEmail);
+            facade.createRide(departCity, arrivalCity, rideDate, numSeats, price, user.getEmail());
 
             FacesContext.getCurrentInstance().addMessage(null, 
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Ride created successfully: " + departCity + " -> " + arrivalCity));

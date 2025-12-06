@@ -41,4 +41,8 @@ public class UserBean implements Serializable {
     public void setUser(Profile user) {
         this.user = user;
     }
+    
+    public String getEmail() {
+    	return user.getEmail();
+    }
 }

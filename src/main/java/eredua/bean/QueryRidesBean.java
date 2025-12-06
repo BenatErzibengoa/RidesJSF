@@ -5,7 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.faces.view.ViewScoped; 
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import org.primefaces.event.SelectEvent;
@@ -15,6 +16,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
     
 import businessLogic.BLFacade;
+import eredua.domain.Profile;
 import eredua.domain.Ride;
 
 
@@ -31,6 +33,9 @@ public class QueryRidesBean implements Serializable {
     private List<Ride> foundRides;
 
     private BLFacade facadeBL;
+    
+    @Inject 
+    private UserBean user;
 
     public QueryRidesBean() {
     	departCities = new ArrayList<>();
@@ -92,6 +97,36 @@ public class QueryRidesBean implements Serializable {
 	    c.add(Calendar.DATE, 1); 
 	    return c.getTime(); // Biharko eguna itzuli
 	}
+	
+	
+	public void erreserbatu(Ride r) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        if (!user.isLoggedIn() || user.getUser() == null) {
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                "Error", "User not logged in. Cannot proceed with booking."));
+            return;
+        }
+        
+        Profile loggedInUser = user.getUser();
+
+        try {
+            facadeBL = FacadeBean.getBusinessLogic();
+            boolean success = facadeBL.erreserbatu(r, loggedInUser.getEmail());
+            if (success) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
+                    "Success", "Ride successfully booked!"));
+                searchRides(); 
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+                    "Error", "Could not book the ride"));
+            }
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, 
+                "Error", "Server error"));
+            e.printStackTrace();
+        }
+    }
 
 
     public String getSelectedOrigin() { return selectedOrigin; }

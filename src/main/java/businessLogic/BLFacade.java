@@ -79,6 +79,10 @@ public interface BLFacade  {
 	 * @return Profile from database
 	 */
     public Profile login(String email, String password);
+    
+    
+    public boolean erreserbatu(Ride ride, String email);
+
 
     
 	

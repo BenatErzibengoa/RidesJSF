@@ -72,17 +72,10 @@ public class HibernateDataAccess {
 		System.out.println(">> DataAccess: createRide=> from= "+from+" to= "+to+" driver="+driverEmail+" date "+date);
 		EntityManager em = JPAUtil.getEntityManager();
 		Ride ride = null;
-		
-		
-	        // Option 1: Create a dummy driver for testing
-	        Driver gid = new Driver(driverEmail, "Test Driver", "12345678");
-	        em.persist(gid);
 	        
 	        // Option 2: Stop execution if this is strictly logic
 	        // db.getTransaction().rollback();
 	        // throw new RuntimeException("Driver not found: " + driverEmail);
-		
-		
 		try {
 			if (new Date().compareTo(date) > 0) {
 				throw new RideMustBeLaterThanTodayException("Ride must be later than today!");
@@ -226,6 +219,36 @@ public class HibernateDataAccess {
             }
         }
     }
+    
+    public boolean erreserbatu(Ride ride, String email) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Traveller t = em.find(Traveller.class, email);
+            Ride r = em.find(Ride.class, ride.getRideNumber());
+            
+            if (r.getTravellers().contains(t)) {
+                em.getTransaction().commit();
+                return false; 
+            }
+
+            int okupatutakoEserlekuak = r.getTravellers().size();
+            boolean libreDago = okupatutakoEserlekuak < r.getnPlaces();
+            if (libreDago) {
+                t.addRide(r); 
+            }
+            em.getTransaction().commit();
+            return libreDago;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            return false;
+        }
+    }
+    
+  
     
     
 

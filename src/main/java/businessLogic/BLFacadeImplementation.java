@@ -61,6 +61,11 @@ public class BLFacadeImplementation  implements BLFacade {
     	Profile p = dbManager.login(email, password);
     	return p;
     }
+    
+    public boolean erreserbatu(Ride ride, String email) {
+    	return dbManager.erreserbatu(ride, email);
+    }
+
 
 	 
 	 public void initializeBD(){

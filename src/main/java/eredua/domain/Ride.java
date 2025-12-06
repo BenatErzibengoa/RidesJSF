@@ -1,7 +1,9 @@
 package eredua.domain;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -22,6 +24,8 @@ public class Ride implements Serializable {
 	private float price;
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private Driver driver;  
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Traveller> travellers = new ArrayList<>();
 	
 	public Ride(){
 		super();
@@ -135,7 +139,7 @@ public class Ride implements Serializable {
 	}
 
 	
-	public float getnPlaces() {
+	public int getnPlaces() {
 		return nPlaces;
 	}
 
@@ -145,7 +149,7 @@ public class Ride implements Serializable {
 	 * @param  nPlaces places to be set
 	 */
 
-	public void setBetMinimum(int nPlaces) {
+	public void setnPlaces(int nPlaces) {
 		this.nPlaces = nPlaces;
 	}
 
@@ -174,6 +178,30 @@ public class Ride implements Serializable {
 	public void setPrice(float price) {
 		this.price = price;
 	}
+	
+	public List<Traveller> getTravellers() {
+		return travellers;
+	}
+	
+	public void setTravellers(List<Traveller> travellers) {
+		this.travellers = travellers;
+	}
+	
+	public void addTraveller(Traveller traveller) {
+		if (!this.travellers.contains(traveller)) {
+			this.travellers.add(traveller);
+			if (!traveller.getBookedRides().contains(this)) {
+				traveller.addRide(this);
+			}
+		}
+	}
+	
+	public boolean isRideFull() {
+        if (this.travellers == null) {
+            return false;
+        }
+        return this.travellers.size() >= this.nPlaces;
+    }
 
 
 
