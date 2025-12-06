@@ -1,20 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-<ui:composition>
-    
-    <h4 class="menu-title">Navigation Menu</h4>
-    
-    <h:panelGroup layout="block">
-        <ul class="menu-list">
-            <li><h:link value="Main Menu" outcome="main" /></li>
-            <li><h:link value="Log In" outcome="login" /></li>
-            <li><h:link value="Search Rides" outcome="queryrides" /></li>
-            <li><h:link value="Create Ride" outcome="createride" /></li>
-        </ul>
-    </h:panelGroup>
-    
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="menuForm">
+        
+        <p:panel style="border:none; text-align:center; font-size:0.8em; color:grey; margin-bottom: 10px;"
+                 rendered="#{user.loggedIn}">
+            Hi, #{user.user.name}
+        </p:panel>
+
+        <p:menu style="width: 100%">
+            <p:submenu label="Navigation">
+                <p:menuitem value="Home" outcome="main" icon="pi pi-home"
+                            rendered="#{not user.loggedIn}" />
+
+                <p:menuitem value="Login" outcome="login" icon="pi pi-user"
+                            rendered="#{not user.loggedIn}" />
+                <p:menuitem value="Register" outcome="register" icon="pi pi-user-plus"
+                            rendered="#{not user.loggedIn}" />
+
+                <p:menuitem value="Create Ride" outcome="createride" icon="pi pi-plus"
+                            rendered="#{user.driver}" />
+
+                <p:menuitem value="Query Rides" outcome="queryrides" icon="pi pi-search"
+                            rendered="#{user.loggedIn}" />
+
+                <p:menuitem value="Logout" action="#{user.logout}" icon="pi pi-power-off"
+                            rendered="#{user.loggedIn}"
+                            styleClass="ui-button-danger"/>
+            </p:submenu>
+        </p:menu>
+        
+    </h:form>
+
 </ui:composition>
-</html>

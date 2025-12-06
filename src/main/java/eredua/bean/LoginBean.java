@@ -9,7 +9,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpSession;
+import jakarta.annotation.PostConstruct; 
 
 
 @Named("login") 
@@ -21,6 +21,16 @@ public class LoginBean implements Serializable {
     private String email; 
     private String password;
 
+    @Inject
+    private UserBean userBean;
+    
+    //Lehenagotik erabiltzaileren saio bat gorde baldin bazen ezabatu
+    @PostConstruct
+    public void init() {
+        if (userBean != null && userBean.isLoggedIn()) {
+            userBean.setUser(null);
+        }
+    }
 
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -30,9 +40,8 @@ public class LoginBean implements Serializable {
             Profile profile = facade.login(email, password);
 
             if (profile != null) {
-                HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
-                session.setAttribute("user", profile); 
-                return "main?faces-redirect=true"; 
+            	userBean.setUser(profile);
+                return "queryrides?faces-redirect=true"; 
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Incorrect credentials"));
                 this.password = null; 
