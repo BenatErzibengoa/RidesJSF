@@ -42,6 +42,10 @@ public class QueryRidesBean implements Serializable {
 
     private BLFacade facadeBL;
     
+    //Mapa
+    private Ride selectedRideForMap;
+
+    
     @Inject 
     private UserBean user;
 
@@ -160,6 +164,12 @@ public class QueryRidesBean implements Serializable {
 	    return Math.round((sum / driverRatings.size()) * 10.0) / 10.0; 
 	}
 
+	public String googleMapsUrl() {
+	    if (selectedRideForMap == null) return "";
+	    String origin = selectedRideForMap.getFrom().replace(" ", "+");
+	    String destination = selectedRideForMap.getTo().replace(" ", "+");
+	    return "https://www.google.com/maps?q=" + origin + "+to+" + destination + "&output=embed";
+	}
 
 
     public String getSelectedOrigin() { return selectedOrigin; }
@@ -184,5 +194,8 @@ public class QueryRidesBean implements Serializable {
     public void setSelectedDriver(Driver selectedDriver) { this.selectedDriver = selectedDriver; }
     public List<Rating> getDriverRatings() { return driverRatings; }
     public void setDriverRatings(List<Rating> driverRatings) { this.driverRatings = driverRatings;}
+    
+    public Ride getSelectedRideForMap() { return selectedRideForMap; }
+    public void setSelectedRideForMap(Ride r) { this.selectedRideForMap = r; }
     
 }

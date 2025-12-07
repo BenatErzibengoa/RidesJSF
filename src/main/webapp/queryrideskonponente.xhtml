@@ -83,50 +83,74 @@
 					style="color: green; font-weight: bold;" />
 
 			</p:column>
-			
+
 			<p:column headerText="Driver">
-            <p:commandLink value="#{ride.driver.name}" 
-                           actionListener="#{queryrides.loadDriverInfo(ride.driver)}"
-               			   update=":queryForm:driverDialog"
-                           oncomplete="PF('driverDialog').show()"
-                           style="font-weight: bold; text-decoration: underline; color: #2196F3;"
-                           title="View ratings" />
-        </p:column>
+				<p:commandLink value="#{ride.driver.name}"
+					actionListener="#{queryrides.loadDriverInfo(ride.driver)}"
+					update=":queryForm:driverDialog"
+					oncomplete="PF('driverDialog').show()"
+					style="font-weight: bold; text-decoration: underline; color: #2196F3;"
+					title="View ratings" />
+			</p:column>
+
+			<p:column headerText="Map">
+
+				<p:commandButton value="See route" icon="pi pi-map"
+					actionListener="#{queryrides.setSelectedRideForMap(ride)}"
+					update=":queryForm:mapDialog" oncomplete="PF('mapDialog').show()"
+					styleClass="ui-button-info" />
+
+			</p:column>
 
 		</p:dataTable>
-		<p:dialog id="driverDialog" widgetVar="driverDialog" 
-                  modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="800">
-            
-            <p:outputPanel id="driverDetail" style="text-align:center;">
-                <h:panelGroup rendered="#{not empty queryrides.selectedDriver}">
-                    
-                    <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
-                        <h2 style="margin-top:0"> #{queryrides.selectedDriver.name} - #{queryrides.getAverageRating()} / 5
-                        </h2>
-                        <h:outputText value="#{queryrides.selectedDriver.email}" style="color: grey;"/>
-                    </div>
+		<p:dialog id="driverDialog" widgetVar="driverDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false" width="800">
 
-                    <p:dataTable value="#{queryrides.driverRatings}" var="rating" 
-                                 emptyMessage="This driver has no ratings yet."
-                                 scrollable="true" scrollHeight="200">
-                        
-                        <p:column headerText="Traveller" width="200">
-                            <h:outputText value="#{rating.traveller.name}" />
-                        </p:column>
+			<p:outputPanel id="driverDetail" style="text-align:center;">
+				<h:panelGroup rendered="#{not empty queryrides.selectedDriver}">
 
-                        <p:column headerText="Rating" width="200">
-                            <p:rating value="#{rating.stars}" readonly="true" />
-                        </p:column>
-                        
-                        <p:column headerText="Comment">
-                            <h:outputText value="#{rating.description}" />
-                        </p:column>
-                        
-                    </p:dataTable>
-                    
-                </h:panelGroup>
-            </p:outputPanel>
-        </p:dialog>
+					<div
+						style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+						<h2 style="margin-top: 0">#{queryrides.selectedDriver.name} -
+							#{queryrides.getAverageRating()} / 5</h2>
+						<h:outputText value="#{queryrides.selectedDriver.email}"
+							style="color: grey;" />
+					</div>
+
+					<p:dataTable value="#{queryrides.driverRatings}" var="rating"
+						emptyMessage="This driver has no ratings yet." scrollable="true"
+						scrollHeight="200">
+
+						<p:column headerText="Traveller" width="200">
+							<h:outputText value="#{rating.traveller.name}" />
+						</p:column>
+
+						<p:column headerText="Rating" width="200">
+							<p:rating value="#{rating.stars}" readonly="true" />
+						</p:column>
+
+						<p:column headerText="Comment">
+							<h:outputText value="#{rating.description}" />
+						</p:column>
+
+					</p:dataTable>
+
+				</h:panelGroup>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog id="mapDialog" header="Route Preview" widgetVar="mapDialog"
+			modal="true" width="900" height="600" resizable="false"
+			closable="true">
+
+			<h:panelGroup id="mapContainer">
+				<iframe src="#{queryrides.googleMapsUrl()}" width="850" height="500"
+					style="border: 0;"> </iframe>
+			</h:panelGroup>
+
+		</p:dialog>
+
+
 		<h:messages id="messages" globalOnly="true"
 			styleClass="global-messages" />
 
