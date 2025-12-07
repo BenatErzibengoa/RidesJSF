@@ -89,6 +89,11 @@ public class BLFacadeImplementation  implements BLFacade {
     	List<Rating> ratings = dbManager.getRatingsByDriver(driverEmail);
         return ratings;
     }
+    
+    public boolean hasTravellerRatedRide(int rideNumber, String travellerEmail) {
+    	boolean hasRated = dbManager.hasTravellerRatedRide(rideNumber, travellerEmail);
+        return hasRated;
+    }
 	 
 	 public void initializeBD(){
 		dbManager.initializeDB();

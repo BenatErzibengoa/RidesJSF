@@ -86,7 +86,7 @@
 			
 			<p:column headerText="Driver">
             <p:commandLink value="#{ride.driver.name}" 
-                           actionListener="#{queryRides.loadDriverInfo(ride.driver)}"
+                           actionListener="#{queryrides.loadDriverInfo(ride.driver)}"
                			   update=":queryForm:driverDialog"
                            oncomplete="PF('driverDialog').show()"
                            style="font-weight: bold; text-decoration: underline; color: #2196F3;"
@@ -94,26 +94,27 @@
         </p:column>
 
 		</p:dataTable>
-		<p:dialog id="driverDialog" widgetVar="driverDialog" header="Driver Profile" 
-                  modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="500">
+		<p:dialog id="driverDialog" widgetVar="driverDialog" 
+                  modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="800">
             
             <p:outputPanel id="driverDetail" style="text-align:center;">
-                <h:panelGroup rendered="#{not empty queryRides.selectedDriver}">
+                <h:panelGroup rendered="#{not empty queryrides.selectedDriver}">
                     
                     <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
-                        <h2 style="margin-top:0">#{queryRides.selectedDriver.name}</h2>
-                        <h:outputText value="#{queryRides.selectedDriver.email}" style="color: grey;"/>
+                        <h2 style="margin-top:0"> #{queryrides.selectedDriver.name} - #{queryrides.getAverageRating()} / 5
+                        </h2>
+                        <h:outputText value="#{queryrides.selectedDriver.email}" style="color: grey;"/>
                     </div>
 
-                    <p:dataTable value="#{queryRides.driverRatings}" var="rating" 
+                    <p:dataTable value="#{queryrides.driverRatings}" var="rating" 
                                  emptyMessage="This driver has no ratings yet."
                                  scrollable="true" scrollHeight="200">
                         
-                        <p:column headerText="Traveller" width="100">
+                        <p:column headerText="Traveller" width="200">
                             <h:outputText value="#{rating.traveller.name}" />
                         </p:column>
 
-                        <p:column headerText="Rating" width="80">
+                        <p:column headerText="Rating" width="200">
                             <p:rating value="#{rating.stars}" readonly="true" />
                         </p:column>
                         

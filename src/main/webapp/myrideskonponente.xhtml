@@ -54,10 +54,14 @@
 					style="text-align: center; width: 150px;"
 					rendered="#{user.traveler}">
 					<p:commandButton value="Rate Trip" icon="pi pi-star"
+						rendered="#{!myrides.hasRated(ride)}"
 						styleClass="ui-button-warning"
 						actionListener="#{myrides.openRateDialog(ride)}"
 						update=":myRidesForm:rateDialog"
 						oncomplete="PF('rateDialog').show()" />
+						 <h:outputText value="Rated"
+                  rendered="#{myrides.hasRated(ride)}"
+                  style="color: green; font-weight: bold;" />
 				</p:column>
 
 			</p:dataTable>

@@ -338,6 +338,27 @@ public class HibernateDataAccess {
         return result;
     }
     
+    public boolean hasTravellerRatedRide(int rideNumber, String travellerEmail) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            TypedQuery<Long> query = em.createQuery(
+                "SELECT count(r) FROM Rating r WHERE r.ride.rideNumber = :rideNumber AND r.traveller.email = :email", 
+                Long.class);
+            query.setParameter("rideNumber", rideNumber);
+            query.setParameter("email", travellerEmail);
+            
+            Long count = query.getSingleResult();
+            em.getTransaction().commit();
+            return count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            em.close();
+        }
+    }
+    
   
     
     
@@ -382,9 +403,15 @@ public class HibernateDataAccess {
 			
 			
 			Ride r = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 6), 3, 7.5f);
+			Ride r2 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 7), 3, 7.5f);
+
 			r.addTraveller(traveller1);
-			storeRating(r, driver1.getEmail(), 5, "Oso bidai lasaia");
+			r2.addTraveller(traveller2);
 			
+            Rating rat = new Rating(r, traveller1, 5, "Oso bidai lasaia");
+            Rating rat2 = new Rating(r, traveller2, 3, "Azkarregi gidatu zuen, beste dena oso ondo");
+
+
 			
 
 			em.persist(driver1);
@@ -394,6 +421,9 @@ public class HibernateDataAccess {
 			em.persist(traveller1);
 			em.persist(traveller2);
 			em.persist(traveller3);
+			
+            em.persist(rat);
+            em.persist(rat2);
 
 			em.getTransaction().commit();
 			System.out.println("Db initialized");

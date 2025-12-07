@@ -150,6 +150,16 @@ public class QueryRidesBean implements Serializable {
         BLFacade facade = FacadeBean.getBusinessLogic();
         this.driverRatings = facade.getRatingsByDriver(driver.getEmail());
     }
+	
+	public double getAverageRating() {
+	    if (driverRatings == null || driverRatings.isEmpty()) return 0.0;
+	    double sum = 0.0;
+	    for (Rating r : driverRatings) {
+	        sum += r.getStars();
+	    }
+	    return Math.round((sum / driverRatings.size()) * 10.0) / 10.0; 
+	}
+
 
 
     public String getSelectedOrigin() { return selectedOrigin; }

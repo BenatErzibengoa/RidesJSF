@@ -102,6 +102,14 @@ public class MyRidesBean implements Serializable {
         return pastRides;
     }
     
+    public boolean hasRated(Ride ride) {
+        if (user.isTraveler()) {
+            BLFacade facade = FacadeBean.getBusinessLogic();
+            return facade.hasTravellerRatedRide(ride.getRideNumber(), user.getEmail());
+        }
+        return false;
+    }
+    
     public Ride getRideToRate() { return rideToRate; }
     public void setRideToRate(Ride rideToRate) { this.rideToRate = rideToRate; }
     public int getRatingStars() { return ratingStars; }
