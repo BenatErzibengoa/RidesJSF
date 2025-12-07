@@ -87,7 +87,7 @@
 			<p:column headerText="Driver">
             <p:commandLink value="#{ride.driver.name}" 
                            actionListener="#{queryRides.loadDriverInfo(ride.driver)}"
-                           update=":mainForm:driverDialog"
+               			   update=":queryForm:driverDialog"
                            oncomplete="PF('driverDialog').show()"
                            style="font-weight: bold; text-decoration: underline; color: #2196F3;"
                            title="View ratings" />

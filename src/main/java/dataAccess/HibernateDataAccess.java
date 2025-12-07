@@ -383,6 +383,7 @@ public class HibernateDataAccess {
 			
 			Ride r = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 6), 3, 7.5f);
 			r.addTraveller(traveller1);
+			storeRating(r, driver1.getEmail(), 5, "Oso bidai lasaia");
 			
 			
 
