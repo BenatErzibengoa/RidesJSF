@@ -6,6 +6,7 @@ import java.util.List;
 import eredua.domain.Profile;
 import eredua.domain.Rating;
 import eredua.domain.Ride;
+import eredua.domain.Traveller;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
 
@@ -93,6 +94,8 @@ public interface BLFacade  {
     public List<Rating> getRatingsByDriver(String driverEmail);
     
     public boolean hasTravellerRatedRide(int rideNumber, String travellerEmail);
+    
+    public List<Traveller> getTravellersByRide(int rideNumber);
 
     
 	

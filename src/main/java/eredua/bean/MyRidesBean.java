@@ -16,6 +16,7 @@ import jakarta.inject.Named;
 
 import businessLogic.BLFacade;
 import eredua.domain.Ride;
+import eredua.domain.Traveller;
 
 @Named("myrides")
 @ViewScoped
@@ -31,6 +32,10 @@ public class MyRidesBean implements Serializable {
     private Ride rideToRate;
     private int ratingStars;
     private String ratingDescription;
+    
+    //Traveller apuntatuta Ride batera
+    private List<Traveller> rideTravellers;
+
 
     @Inject
     private UserBean user;
@@ -110,11 +115,18 @@ public class MyRidesBean implements Serializable {
         return false;
     }
     
+    public void showRideTravellers(Ride ride) {
+        BLFacade facade = FacadeBean.getBusinessLogic();
+        rideTravellers = facade.getTravellersByRide(ride.getRideNumber());
+        PrimeFaces.current().executeScript("PF('travellersDialog').show();");
+    }
+    
     public Ride getRideToRate() { return rideToRate; }
     public void setRideToRate(Ride rideToRate) { this.rideToRate = rideToRate; }
     public int getRatingStars() { return ratingStars; }
     public void setRatingStars(int ratingStars) { this.ratingStars = ratingStars; }
     public String getRatingDescription() { return ratingDescription; }
     public void setRatingDescription(String ratingDescription) { this.ratingDescription = ratingDescription; }
+    public List<Traveller> getRideTravellers(){return this.rideTravellers;}
     
 }

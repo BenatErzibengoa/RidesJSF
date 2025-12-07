@@ -359,6 +359,28 @@ public class HibernateDataAccess {
         }
     }
     
+    public List<Traveller> getTravellersByRide(int rideNumber) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Traveller> travellers = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+            Ride ride = em.find(Ride.class, rideNumber);
+            if (ride != null) {
+                travellers = ride.getTravellers();
+                travellers.size(); //Lazy denez forzatu kargatzera bidaiariak
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        } finally {
+            em.close();
+        }
+        return travellers;
+    }
+    
   
     
     

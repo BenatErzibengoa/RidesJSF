@@ -8,6 +8,7 @@ import dataAccess.HibernateDataAccess;
 import eredua.domain.Profile;
 import eredua.domain.Rating;
 import eredua.domain.Ride;
+import eredua.domain.Traveller;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
 
@@ -93,6 +94,11 @@ public class BLFacadeImplementation  implements BLFacade {
     public boolean hasTravellerRatedRide(int rideNumber, String travellerEmail) {
     	boolean hasRated = dbManager.hasTravellerRatedRide(rideNumber, travellerEmail);
         return hasRated;
+    }
+    
+    public List<Traveller> getTravellersByRide(int rideNumber){
+    	List<Traveller> ts = dbManager.getTravellersByRide(rideNumber);
+    	return ts;
     }
 	 
 	 public void initializeBD(){

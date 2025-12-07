@@ -28,6 +28,13 @@
 				<p:column headerText="Price">
 					<h:outputText value="#{ride.price} €" />
 				</p:column>
+				<p:column headerText="Passengers" rendered="#{user.driver}"
+					style="text-align:center; width:150px;">
+					<p:commandButton value="View" icon="pi pi-users"
+						actionListener="#{myrides.showRideTravellers(ride)}"
+						update=":myRidesForm:travellersDialog" />
+				</p:column>
+
 			</p:dataTable>
 		</p:panel>
 
@@ -59,45 +66,66 @@
 						actionListener="#{myrides.openRateDialog(ride)}"
 						update=":myRidesForm:rateDialog"
 						oncomplete="PF('rateDialog').show()" />
-						 <h:outputText value="Rated"
-                  rendered="#{myrides.hasRated(ride)}"
-                  style="color: green; font-weight: bold;" />
+					<h:outputText value="Rated" rendered="#{myrides.hasRated(ride)}"
+						style="color: green; font-weight: bold;" />
+				</p:column>
+
+				<p:column headerText="Passengers" rendered="#{user.driver}"
+					style="text-align:center; width:150px;">
+					<p:commandButton value="View" icon="pi pi-users"
+						actionListener="#{myrides.showRideTravellers(ride)}"
+						update=":myRidesForm:travellersDialog" />
 				</p:column>
 
 			</p:dataTable>
 		</p:panel>
 
 		<br />
-		
-		<p:dialog id="rateDialog" header="Rate your Trip" widgetVar="rateDialog" 
-                  modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-            
-            <p:outputPanel id="ratePanel" style="text-align:center;">
-                <h:panelGrid columns="1" style="margin: 0 auto;">
-                    
-                    <h:outputText value="How was your ride?" style="font-weight:bold;" />
-                    
-                    <p:rating value="#{myrides.ratingStars}" stars="5" required="true" />
-                    
-                    <p:spacer height="10" />
-                    
-                    <h:outputText value="Comment:" />
-                    <p:inputTextarea value="#{myrides.ratingDescription}" rows="5" cols="30" 
-                                     counter="display" maxlength="250" 
-                                     counterTemplate="{0} characters remaining." autoResize="false" />
-                    <h:outputText id="display" class="block" />
-                    
-                    <p:spacer height="20" />
-                    
-                    <p:commandButton value="Submit Rating" 
-                                     action="#{myrides.submitRating}"
-                                     update="myRidesForm" 
-                                     icon="pi pi-check" />
-                </h:panelGrid>
-            </p:outputPanel>
-        </p:dialog>
-        
-        <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+
+		<p:dialog id="rateDialog" header="Rate your Trip"
+			widgetVar="rateDialog" modal="true" showEffect="fade"
+			hideEffect="fade" resizable="false">
+
+			<p:outputPanel id="ratePanel" style="text-align:center;">
+				<h:panelGrid columns="1" style="margin: 0 auto;">
+
+					<h:outputText value="How was your ride?" style="font-weight:bold;" />
+
+					<p:rating value="#{myrides.ratingStars}" stars="5" required="true" />
+
+					<p:spacer height="10" />
+
+					<h:outputText value="Comment:" />
+					<p:inputTextarea value="#{myrides.ratingDescription}" rows="5"
+						cols="30" counter="display" maxlength="250"
+						counterTemplate="{0} characters remaining." autoResize="false" />
+					<h:outputText id="display" class="block" />
+
+					<p:spacer height="20" />
+
+					<p:commandButton value="Submit Rating"
+						action="#{myrides.submitRating}" update="myRidesForm"
+						icon="pi pi-check" />
+				</h:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog id="travellersDialog" header="Ride Passengers"
+			widgetVar="travellersDialog" modal="true" showEffect="fade"
+			hideEffect="fade" resizable="false" width="400">
+
+			<p:dataTable value="#{myrides.rideTravellers}" var="traveller"
+				emptyMessage="No travellers yet.">
+				<p:column headerText="Name">
+					<h:outputText value="#{traveller.name}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{traveller.email}" />
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+
+		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 
 	</h:form>
 </ui:composition>
