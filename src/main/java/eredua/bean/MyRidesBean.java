@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.primefaces.PrimeFaces;
+
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -19,8 +23,14 @@ public class MyRidesBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //Rides erakusteko
     private List<Ride> futureRides;
     private List<Ride> pastRides;
+    
+    //Balorazioak
+    private Ride rideToRate;
+    private int ratingStars;
+    private String ratingDescription;
 
     @Inject
     private UserBean user;
@@ -60,8 +70,30 @@ public class MyRidesBean implements Serializable {
             }
         }
     }
+    
+    public void openRateDialog(Ride ride) {
+        this.rideToRate = ride;
+        this.ratingStars = 0; 
+        this.ratingDescription = ""; 
+    }
 
-    // Getters
+    public void submitRating() {
+        if (rideToRate != null && user.isLoggedIn()) {
+            BLFacade facade = FacadeBean.getBusinessLogic();
+            try {
+                facade.storeRating(rideToRate, user.getEmail(), ratingStars, ratingDescription);
+                FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Rating saved successfully!"));
+                PrimeFaces.current().executeScript("PF('rateDialog').hide();");
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Could not save rating."));
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
     public List<Ride> getFutureRides() {
         return futureRides;
     }
@@ -70,9 +102,11 @@ public class MyRidesBean implements Serializable {
         return pastRides;
     }
     
-    // Método placeholder para la futura funcionalidad de valorar
-    public void rateRide(Ride r) {
-        System.out.println("Valorando ride: " + r.getRideNumber());
-        // Aquí irá la lógica de valoración en el futuro
-    }
+    public Ride getRideToRate() { return rideToRate; }
+    public void setRideToRate(Ride rideToRate) { this.rideToRate = rideToRate; }
+    public int getRatingStars() { return ratingStars; }
+    public void setRatingStars(int ratingStars) { this.ratingStars = ratingStars; }
+    public String getRatingDescription() { return ratingDescription; }
+    public void setRatingDescription(String ratingDescription) { this.ratingDescription = ratingDescription; }
+    
 }

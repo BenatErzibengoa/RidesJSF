@@ -5,12 +5,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<h:form id="myRidesForm">
-		
+
 		<p:panel header="My Future Rides" styleClass="query-panel-margin">
-			<p:dataTable value="#{myrides.futureRides}" var="ride" 
-						 emptyMessage="No future rides scheduled."
-						 border="1" styleClass="rides-table">
-				
+			<p:dataTable value="#{myrides.futureRides}" var="ride"
+				emptyMessage="No future rides scheduled." border="1"
+				styleClass="rides-table">
+
 				<p:column headerText="Date">
 					<h:outputText value="#{ride.date}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
@@ -35,9 +35,9 @@
 
 		<p:panel header="My Past Rides" styleClass="query-panel-margin">
 			<p:dataTable value="#{myrides.pastRides}" var="ride"
-						 emptyMessage="No past rides found."
-						 border="1" styleClass="rides-table">
-				
+				emptyMessage="No past rides found." border="1"
+				styleClass="rides-table">
+
 				<p:column headerText="Date">
 					<h:outputText value="#{ride.date}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
@@ -49,19 +49,51 @@
 				<p:column headerText="To">
 					<h:outputText value="#{ride.to}" />
 				</p:column>
-				
-				<p:column headerText="Rating" style="text-align: center; width: 150px;" rendered="#{user.traveler}">
-					<p:commandButton value="Rate Trip" 
-									 icon="pi pi-star" 
-									 styleClass="ui-button-warning"
-									 disabled="true" 
-									 title="Rating functionality coming soon" />
+
+				<p:column headerText="Rating"
+					style="text-align: center; width: 150px;"
+					rendered="#{user.traveler}">
+					<p:commandButton value="Rate Trip" icon="pi pi-star"
+						styleClass="ui-button-warning"
+						actionListener="#{myrides.openRateDialog(ride)}"
+						update=":myRidesForm:rateDialog"
+						oncomplete="PF('rateDialog').show()" />
 				</p:column>
-				
+
 			</p:dataTable>
 		</p:panel>
 
 		<br />
+		
+		<p:dialog id="rateDialog" header="Rate your Trip" widgetVar="rateDialog" 
+                  modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            
+            <p:outputPanel id="ratePanel" style="text-align:center;">
+                <h:panelGrid columns="1" style="margin: 0 auto;">
+                    
+                    <h:outputText value="How was your ride?" style="font-weight:bold;" />
+                    
+                    <p:rating value="#{myrides.ratingStars}" stars="5" required="true" />
+                    
+                    <p:spacer height="10" />
+                    
+                    <h:outputText value="Comment:" />
+                    <p:inputTextarea value="#{myrides.ratingDescription}" rows="5" cols="30" 
+                                     counter="display" maxlength="250" 
+                                     counterTemplate="{0} characters remaining." autoResize="false" />
+                    <h:outputText id="display" class="block" />
+                    
+                    <p:spacer height="20" />
+                    
+                    <p:commandButton value="Submit Rating" 
+                                     action="#{myrides.submitRating}"
+                                     update="myRidesForm" 
+                                     icon="pi pi-check" />
+                </h:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+        
+        <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 
 	</h:form>
 </ui:composition>

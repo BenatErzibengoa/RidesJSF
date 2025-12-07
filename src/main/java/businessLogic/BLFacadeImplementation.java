@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import dataAccess.HibernateDataAccess;
 import eredua.domain.Profile;
+import eredua.domain.Rating;
 import eredua.domain.Ride;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
@@ -79,6 +80,10 @@ public class BLFacadeImplementation  implements BLFacade {
         return rs;
     }
 
+    public Rating storeRating(Ride ride, String travellerEmail, int stars, String description) {
+    	Rating r = dbManager.storeRating(ride, travellerEmail, stars, description);
+        return r;
+    }
 	 
 	 public void initializeBD(){
 		dbManager.initializeDB();

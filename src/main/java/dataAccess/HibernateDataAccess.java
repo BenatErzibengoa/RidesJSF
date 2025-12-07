@@ -13,6 +13,7 @@ import configuration.UtilDate;
 import eredua.JPAUtil;
 import eredua.domain.Driver;
 import eredua.domain.Profile;
+import eredua.domain.Rating;
 import eredua.domain.Ride;
 import eredua.domain.Traveller;
 import eredua.factory.ProfileFactory;
@@ -278,7 +279,7 @@ public class HibernateDataAccess {
             Traveller traveller = em.find(Traveller.class, travellerEmail);
             if (traveller != null) {
                 rides = traveller.getBookedRides();
-                rides.size(); //Beharrezkoa LAZY moduan ondo kargatzeko rides-ak, bestela Rides zerrendaren erreferentzia bai baina ride balioak ez dira kargatuko
+                rides.size(); //Beharrezkoa LAZY delako
             }
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -290,6 +291,31 @@ public class HibernateDataAccess {
             em.close();
         }
         return rides;
+    }
+    
+    public Rating storeRating(Ride ride, String tEmail, int stars, String description) {
+        EntityManager em = JPAUtil.getEntityManager();
+        Rating rating = null;
+        try {
+            em.getTransaction().begin();
+            Traveller traveller = em.find(Traveller.class, tEmail);
+            Ride r = em.find(Ride.class, ride.getRideNumber());
+            if (traveller != null && r != null) {
+                rating = new Rating(r, traveller, stars, description);
+                em.persist(rating);
+            }
+            em.getTransaction().commit();
+            return rating;
+            
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+            return rating;
+        } finally {
+            em.close();
+        }
     }
     
   
