@@ -117,7 +117,7 @@ public class HibernateDataAccess {
 		List<Ride> result = new ArrayList<Ride>();
 		try {
 			em.getTransaction().begin();
-			TypedQuery<Ride> query = em.createQuery("SELECT r FROM Ride r WHERE r.from=:from AND r.to=:to AND r.date=:date", Ride.class);
+			TypedQuery<Ride> query = em.createQuery("SELECT r FROM Ride r LEFT JOIN FETCH r.travellers WHERE r.from=:from AND r.to=:to AND r.date=:date", Ride.class); //JOIN travellers eskuratzeko
 			query.setParameter("from", from);
 			query.setParameter("to", to);
 			query.setParameter("date", date);
@@ -316,6 +316,26 @@ public class HibernateDataAccess {
         } finally {
             em.close();
         }
+    }
+    
+    public List<Rating> getRatingsByDriver(String driverEmail) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Rating> result = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+            // JOIN FETCH egiten da informazio osoa eskuratzeko
+            TypedQuery<Rating> query = em.createQuery(
+                "SELECT r FROM Rating r JOIN FETCH r.ride ride JOIN FETCH r.traveller WHERE ride.driver.email = :email", 
+                Rating.class);
+            query.setParameter("email", driverEmail);
+            result = query.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return result;
     }
     
   

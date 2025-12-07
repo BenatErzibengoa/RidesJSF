@@ -83,8 +83,49 @@
 					style="color: green; font-weight: bold;" />
 
 			</p:column>
+			
+			<p:column headerText="Driver">
+            <p:commandLink value="#{ride.driver.name}" 
+                           actionListener="#{queryRides.loadDriverInfo(ride.driver)}"
+                           update=":mainForm:driverDialog"
+                           oncomplete="PF('driverDialog').show()"
+                           style="font-weight: bold; text-decoration: underline; color: #2196F3;"
+                           title="View ratings" />
+        </p:column>
 
 		</p:dataTable>
+		<p:dialog id="driverDialog" widgetVar="driverDialog" header="Driver Profile" 
+                  modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="500">
+            
+            <p:outputPanel id="driverDetail" style="text-align:center;">
+                <h:panelGroup rendered="#{not empty queryRides.selectedDriver}">
+                    
+                    <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                        <h2 style="margin-top:0">#{queryRides.selectedDriver.name}</h2>
+                        <h:outputText value="#{queryRides.selectedDriver.email}" style="color: grey;"/>
+                    </div>
+
+                    <p:dataTable value="#{queryRides.driverRatings}" var="rating" 
+                                 emptyMessage="This driver has no ratings yet."
+                                 scrollable="true" scrollHeight="200">
+                        
+                        <p:column headerText="Traveller" width="100">
+                            <h:outputText value="#{rating.traveller.name}" />
+                        </p:column>
+
+                        <p:column headerText="Rating" width="80">
+                            <p:rating value="#{rating.stars}" readonly="true" />
+                        </p:column>
+                        
+                        <p:column headerText="Comment">
+                            <h:outputText value="#{rating.description}" />
+                        </p:column>
+                        
+                    </p:dataTable>
+                    
+                </h:panelGroup>
+            </p:outputPanel>
+        </p:dialog>
 		<h:messages id="messages" globalOnly="true"
 			styleClass="global-messages" />
 

@@ -16,7 +16,9 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
     
 import businessLogic.BLFacade;
+import eredua.domain.Driver;
 import eredua.domain.Profile;
+import eredua.domain.Rating;
 import eredua.domain.Ride;
 import eredua.domain.Traveller;
 
@@ -25,6 +27,7 @@ import eredua.domain.Traveller;
 @ViewScoped  //Datuak bizirik soilik uneko pantailan
 public class QueryRidesBean implements Serializable {
 
+	//Rides bilaketa
     private String selectedOrigin;
     private String selectedDestination;
     private Date selectedDate;
@@ -32,6 +35,10 @@ public class QueryRidesBean implements Serializable {
     private List<String> departCities;
     private List<String> destinationCities;
     private List<Ride> foundRides;
+    
+    //Balorazioak
+    private Driver selectedDriver;
+    private List<Rating> driverRatings;
 
     private BLFacade facadeBL;
     
@@ -137,6 +144,12 @@ public class QueryRidesBean implements Serializable {
             e.printStackTrace();
         }
     }
+	
+	public void loadDriverInfo(Driver driver) {
+        this.selectedDriver = driver;
+        BLFacade facade = FacadeBean.getBusinessLogic();
+        this.driverRatings = facade.getRatingsByDriver(driver.getEmail());
+    }
 
 
     public String getSelectedOrigin() { return selectedOrigin; }
@@ -156,4 +169,10 @@ public class QueryRidesBean implements Serializable {
 
     public List<Ride> getFoundRides() { return foundRides; }
     public void setFoundRides(List<Ride> foundRides) { this.foundRides = foundRides; }
+    
+    public Driver getSelectedDriver() { return selectedDriver; }
+    public void setSelectedDriver(Driver selectedDriver) { this.selectedDriver = selectedDriver; }
+    public List<Rating> getDriverRatings() { return driverRatings; }
+    public void setDriverRatings(List<Rating> driverRatings) { this.driverRatings = driverRatings;}
+    
 }

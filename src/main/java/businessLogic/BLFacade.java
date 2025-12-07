@@ -89,6 +89,8 @@ public interface BLFacade  {
     public List<Ride> getRidesByTraveller(String travellerEmail);
     
     public Rating storeRating(Ride ride, String travellerEmail, int stars, String description);
+    
+    public List<Rating> getRatingsByDriver(String driverEmail);
 
 
     

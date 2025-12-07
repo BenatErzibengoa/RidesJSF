@@ -84,6 +84,11 @@ public class BLFacadeImplementation  implements BLFacade {
     	Rating r = dbManager.storeRating(ride, travellerEmail, stars, description);
         return r;
     }
+    
+    public List<Rating> getRatingsByDriver(String driverEmail) {
+    	List<Rating> ratings = dbManager.getRatingsByDriver(driverEmail);
+        return ratings;
+    }
 	 
 	 public void initializeBD(){
 		dbManager.initializeDB();
