@@ -248,6 +248,50 @@ public class HibernateDataAccess {
         }
     }
     
+    public List<Ride> getRidesByDriver(String driverEmail) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Ride> rides = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+            Driver driver = em.find(Driver.class, driverEmail);
+            if (driver != null) {
+                rides = driver.getRides();
+                rides.size(); //Beharrezkoa LAZY moduan ondo kargatzeko rides-ak, bestela Rides zerrendaren erreferentzia bai baina ride balioak ez dira kargatuko
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return rides;
+    }
+
+    public List<Ride> getRidesByTraveller(String travellerEmail) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Ride> rides = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+            Traveller traveller = em.find(Traveller.class, travellerEmail);
+            if (traveller != null) {
+                rides = traveller.getBookedRides();
+                rides.size(); //Beharrezkoa LAZY moduan ondo kargatzeko rides-ak, bestela Rides zerrendaren erreferentzia bai baina ride balioak ez dira kargatuko
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return rides;
+    }
+    
   
     
     
@@ -267,13 +311,13 @@ public class HibernateDataAccess {
 			}
 
 			// Create drivers
-			Driver driver1 = new Driver("driver1@gmail.com", "Aitor Fernandez", "a");
-			Driver driver2 = new Driver("driver2@gmail.com", "Ane Gaztañaga", "a");
-			Driver driver3 = new Driver("driver3@gmail.com", "Test driver", "a");
+			Driver driver1 = new Driver("d@gmail.com", "Aitor Fernandez", "d");
+			Driver driver2 = new Driver("d2@gmail.com", "Ane Gaztañaga", "d");
+			Driver driver3 = new Driver("d3@gmail.com", "Test driver", "d");
 			
-			Traveller traveller1 = new Traveller("traveller1@gmail.com", "Beñat Ercibengoa", "b");
-			Traveller traveller2 = new Traveller("traveller2@gmail.com", "Jon Portu", "b");
-			Traveller traveller3 = new Traveller("traveller2@gmail.com", "Jon Elizetxea", "b");
+			Traveller traveller1 = new Traveller("t@gmail.com", "Beñat Erzibengoa", "t");
+			Traveller traveller2 = new Traveller("t2@gmail.com", "Jon Portu", "t");
+			Traveller traveller3 = new Traveller("t3@gmail.com", "Jon Elizetxea", "t");
 
 
 			// Create rides
@@ -288,10 +332,21 @@ public class HibernateDataAccess {
 			driver2.addRide("Eibar", "Gasteiz", UtilDate.newDate(year, month, 6), 2, 5);
 
 			driver3.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 14), 1, 3);
+					
+			
+			
+			Ride r = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 6), 3, 7.5f);
+			r.addTraveller(traveller1);
+			
+			
 
 			em.persist(driver1);
 			em.persist(driver2);
 			em.persist(driver3);
+			
+			em.persist(traveller1);
+			em.persist(traveller2);
+			em.persist(traveller3);
 
 			em.getTransaction().commit();
 			System.out.println("Db initialized");

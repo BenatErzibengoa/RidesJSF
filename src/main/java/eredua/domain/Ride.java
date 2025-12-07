@@ -24,7 +24,7 @@ public class Ride implements Serializable {
 	private float price;
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private Driver driver;  
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Traveller> travellers = new ArrayList<>();
 	
 	public Ride(){

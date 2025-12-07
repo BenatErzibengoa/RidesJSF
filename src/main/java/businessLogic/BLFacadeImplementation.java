@@ -19,11 +19,14 @@ public class BLFacadeImplementation  implements BLFacade {
 	public BLFacadeImplementation()  {		
 		System.out.println("Creating BLFacadeImplementation instance");
 		    dbManager=new HibernateDataAccess();
+		    dbManager.initializeDB();
 	}
 	
     public BLFacadeImplementation(HibernateDataAccess da)  {
-		System.out.println("Creating BLFacadeImplementation instance with HibernateDataAccess parameter");		
-		dbManager=da;		
+		System.out.println("Creating BLFacadeImplementation instance with HibernateDataAccess parameter");
+		dbManager=da;	
+		System.out.println("Initialazing DB with data...");
+	    dbManager.initializeDB();
 	}
     
     public List<String> getDepartCities(){		
@@ -65,7 +68,16 @@ public class BLFacadeImplementation  implements BLFacade {
     public boolean erreserbatu(Ride ride, String email) {
     	return dbManager.erreserbatu(ride, email);
     }
+    
+    public List<Ride> getRidesByDriver(String driverEmail) {
+    	List<Ride> rs = dbManager.getRidesByDriver(driverEmail);
+        return rs;
+    }
 
+    public List<Ride> getRidesByTraveller(String travellerEmail) {
+    	List<Ride> rs = dbManager.getRidesByTraveller(travellerEmail);
+        return rs;
+    }
 
 	 
 	 public void initializeBD(){

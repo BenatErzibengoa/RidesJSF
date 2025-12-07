@@ -25,6 +25,9 @@
 
                 <p:menuitem value="Query Rides" outcome="queryrides" icon="pi pi-search"
                             rendered="#{user.loggedIn}" />
+                            
+                <p:menuitem value="My Rides" outcome="myrides" icon="pi pi-list"
+                            rendered="#{user.loggedIn}" />
 
                 <p:menuitem value="Logout" action="#{user.logout}" icon="pi pi-power-off"
                             rendered="#{user.loggedIn}"

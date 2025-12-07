@@ -82,6 +82,10 @@ public interface BLFacade  {
     
     
     public boolean erreserbatu(Ride ride, String email);
+    
+    public List<Ride> getRidesByDriver(String driverEmail);
+    
+    public List<Ride> getRidesByTraveller(String travellerEmail);
 
 
     

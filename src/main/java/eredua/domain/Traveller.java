@@ -14,7 +14,7 @@ public class Traveller extends Profile implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToMany(mappedBy = "travellers", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(mappedBy = "travellers", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Ride> bookedRides = new ArrayList<>();
 
 	public Traveller() {

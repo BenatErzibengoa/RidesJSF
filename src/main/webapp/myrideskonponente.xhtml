@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:form id="myRidesForm">
+		
+		<p:panel header="My Future Rides" styleClass="query-panel-margin">
+			<p:dataTable value="#{myrides.futureRides}" var="ride" 
+						 emptyMessage="No future rides scheduled."
+						 border="1" styleClass="rides-table">
+				
+				<p:column headerText="Date">
+					<h:outputText value="#{ride.date}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="From">
+					<h:outputText value="#{ride.from}" />
+				</p:column>
+				<p:column headerText="To">
+					<h:outputText value="#{ride.to}" />
+				</p:column>
+				<p:column headerText="Driver" rendered="#{user.traveler}">
+					<h:outputText value="#{ride.driver.name}" />
+				</p:column>
+				<p:column headerText="Price">
+					<h:outputText value="#{ride.price} €" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<div class="fieldset-spacer"></div>
+
+		<p:panel header="My Past Rides" styleClass="query-panel-margin">
+			<p:dataTable value="#{myrides.pastRides}" var="ride"
+						 emptyMessage="No past rides found."
+						 border="1" styleClass="rides-table">
+				
+				<p:column headerText="Date">
+					<h:outputText value="#{ride.date}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="From">
+					<h:outputText value="#{ride.from}" />
+				</p:column>
+				<p:column headerText="To">
+					<h:outputText value="#{ride.to}" />
+				</p:column>
+				
+				<p:column headerText="Rating" style="text-align: center; width: 150px;" rendered="#{user.traveler}">
+					<p:commandButton value="Rate Trip" 
+									 icon="pi pi-star" 
+									 styleClass="ui-button-warning"
+									 disabled="true" 
+									 title="Rating functionality coming soon" />
+				</p:column>
+				
+			</p:dataTable>
+		</p:panel>
+
+		<br />
+
+	</h:form>
+</ui:composition>

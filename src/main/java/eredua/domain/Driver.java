@@ -1,14 +1,13 @@
 package eredua.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 
@@ -20,8 +19,8 @@ public class Driver extends Profile implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@OneToMany(mappedBy = "driver", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
-	private List<Ride> rides=new Vector<Ride>();
+	@OneToMany(mappedBy = "driver", fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+	private List<Ride> rides=new ArrayList<Ride>();
 
 	public Driver() {
 		super();
@@ -48,6 +47,10 @@ public class Driver extends Profile implements Serializable {
         Ride ride=new Ride(from,to,date,nPlaces,price, this);
         rides.add(ride);
         return ride;
+	}
+	
+	public List<Ride> getRides(){
+		return rides;
 	}
 
 	/**
