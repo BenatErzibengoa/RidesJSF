@@ -166,7 +166,7 @@ public class QueryRidesBean implements Serializable {
 
 	public String googleMapsUrl() {
 	    if (selectedRideForMap == null) return "";
-	    String origin = selectedRideForMap.getFrom().replace(" ", "+");
+	    String origin = selectedRideForMap.getFrom().replace(" ", "+"); //Zuriuneak '+'-rengatik aldatu. Horrela, URL bat sortzen dugu
 	    String destination = selectedRideForMap.getTo().replace(" ", "+");
 	    return "https://www.google.com/maps?q=" + origin + "+to+" + destination + "&output=embed";
 	}

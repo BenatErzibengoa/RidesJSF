@@ -386,77 +386,105 @@ public class HibernateDataAccess {
     
 
     public void initializeDB() {
-		EntityManager em = JPAUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
 
-			Calendar today = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
+            int month = today.get(Calendar.MONTH);
+            int year = today.get(Calendar.YEAR);
+            if (month == 12) {
+                month = 1;
+                year += 1;
+            }
 
-			int month = today.get(Calendar.MONTH);
-			int year = today.get(Calendar.YEAR);
-			if (month == 12) {
-				month = 1;
-				year += 1;
-			}
+            Driver driver1 = new Driver("d@gmail.com", "Aitor Fernandez", "d");
+            Driver driver2 = new Driver("d2@gmail.com", "Ane Gaztañaga", "d");
+            Driver driver3 = new Driver("d3@gmail.com", "Test driver", "d");
+            Driver driver4 = new Driver("d4@gmail.com", "Unai Etxebarria", "d"); 
 
-			// Create drivers
-			Driver driver1 = new Driver("d@gmail.com", "Aitor Fernandez", "d");
-			Driver driver2 = new Driver("d2@gmail.com", "Ane Gaztañaga", "d");
-			Driver driver3 = new Driver("d3@gmail.com", "Test driver", "d");
-			
-			Traveller traveller1 = new Traveller("t@gmail.com", "Beñat Erzibengoa", "t");
-			Traveller traveller2 = new Traveller("t2@gmail.com", "Jon Portu", "t");
-			Traveller traveller3 = new Traveller("t3@gmail.com", "Jon Elizetxea", "t");
+            Traveller traveller1 = new Traveller("t@gmail.com", "Beñat Erzibengoa", "t");
+            Traveller traveller2 = new Traveller("t2@gmail.com", "Jon Portu", "t");
+            Traveller traveller3 = new Traveller("t3@gmail.com", "Jon Elizetxea", "t");
+            Traveller traveller4 = new Traveller("t4@gmail.com", "Miren Odriozola", "t"); 
 
+            driver1.addRide("Donostia", "Bilbo", UtilDate.newDate(year, month, 15), 4, 7);
+            driver1.addRide("Donostia", "Gazteiz", UtilDate.newDate(year, month, 6), 4, 8);
+            driver1.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 25), 4, 4);
+            driver1.addRide("Donostia", "Iruña", UtilDate.newDate(year, month, 7), 4, 8);
 
-			// Create rides
-			driver1.addRide("Donostia", "Bilbo", UtilDate.newDate(year, month, 15), 4, 7);
-			driver1.addRide("Donostia", "Gazteiz", UtilDate.newDate(year, month, 6), 4, 8);
-			driver1.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 25), 4, 4);
+            driver2.addRide("Donostia", "Bilbo", UtilDate.newDate(year, month, 15), 3, 3);
+            driver2.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 25), 2, 5);
+            driver2.addRide("Eibar", "Gasteiz", UtilDate.newDate(year, month, 6), 2, 5);
 
-			driver1.addRide("Donostia", "Iruña", UtilDate.newDate(year, month, 7), 4, 8);
+            driver3.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 14), 1, 3);
+            
+            driver4.addRide("Zarautz", "Donostia", UtilDate.newDate(year, month, 20), 3, 2.5f);
+            driver4.addRide("Donostia", "Madrid", UtilDate.newDate(year, month, 28), 2, 45.0f);
 
-			driver2.addRide("Donostia", "Bilbo", UtilDate.newDate(year, month, 15), 3, 3);
-			driver2.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 25), 2, 5);
-			driver2.addRide("Eibar", "Gasteiz", UtilDate.newDate(year, month, 6), 2, 5);
+            
+            // ### Erabiltzaileek bidaiak egin dituztela simulatu ###
+            // Abaltzisketa --> Urretxu (2 balorazio)
+            Ride r1 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 6), 3, 7.5f);
+            Ride r2 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 7), 3, 7.5f);
+            Ride r2_1 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 25), 3, 7.5f);
+            Ride r2_2 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 8), 3, 7.5f);
 
-			driver3.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 14), 1, 3);
-					
-			
-			
-			Ride r = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 6), 3, 7.5f);
-			Ride r2 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 7), 3, 7.5f);
+            r1.addTraveller(traveller1);
+            r2.addTraveller(traveller2);
+            r2_1.addTraveller(traveller1);
+            r2_2.addTraveller(traveller1);
 
-			r.addTraveller(traveller1);
-			r2.addTraveller(traveller2);
-			
-            Rating rat = new Rating(r, traveller1, 5, "Oso bidai lasaia");
-            Rating rat2 = new Rating(r, traveller2, 3, "Azkarregi gidatu zuen, beste dena oso ondo");
+            
+            Rating rat1 = new Rating(r1, traveller1, 5, "Oso bidai lasaia, gomendagarria.");
+            Rating rat2 = new Rating(r2, traveller2, 3, "Azkarregi gidatu zuen, beste dena oso ondo.");
 
+            // Baiona --> Donostia (2 balorazio)
+            Ride r3 = driver2.addRide("Baiona", "Donostia", UtilDate.newDate(year, month, 10), 4, 6.0f);
+            r3.addTraveller(traveller3);
+            r3.addTraveller(traveller4); 
+            Rating rat3 = new Rating(r3, traveller3, 1, "Ez da azaldu hitzartutako orduan. Oso haserre.");
+            Rating rat4 = new Rating(r3, traveller4, 2, "Berandu iritsi da eta autoa zikina zegoen.");
 
-			
+            // Madrid --> Donostia (Balorazio 1)
+            Ride r4 = driver4.addRide("Madrid", "Donostia", UtilDate.newDate(year, month, 2), 2, 40.0f);
+            r4.addTraveller(traveller1);
+            Rating rat5 = new Rating(r4, traveller1, 5, "Gidari oso jatorra, musika ona jarri du bidean.");
 
-			em.persist(driver1);
-			em.persist(driver2);
-			em.persist(driver3);
-			
-			em.persist(traveller1);
-			em.persist(traveller2);
-			em.persist(traveller3);
-			
-            em.persist(rat);
+            // Hendaia --> Irun (Balorazio 1)
+            Ride r5 = driver3.addRide("Hendaia", "Irun", UtilDate.newDate(year, month, 5), 3, 2.0f);
+            r5.addTraveller(traveller2);
+            Rating rat6 = new Rating(r5, traveller2, 4, "Ongi, arazorik gabe.");
+
+            em.persist(driver1);
+            em.persist(driver2);
+            em.persist(driver3);
+            em.persist(driver4);
+            
+            em.persist(traveller1);
+            em.persist(traveller2);
+            em.persist(traveller3);
+            em.persist(traveller4);
+            
+            // Ride-ak Driverra gordetzean automatikoki gordetzen dira
+            //balorazioak ez(Erabiltzaileak ez ditu gordetzen balorazioak) --> persist egin behar da
+            em.persist(rat1);
             em.persist(rat2);
+            em.persist(rat3);
+            em.persist(rat4);
+            em.persist(rat5);
+            em.persist(rat6);
 
-			em.getTransaction().commit();
-			System.out.println("Db initialized");
-		} catch (Exception e) {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-	}
+            em.getTransaction().commit();
+            System.out.println("Db initialized test data");
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
 	
 }
