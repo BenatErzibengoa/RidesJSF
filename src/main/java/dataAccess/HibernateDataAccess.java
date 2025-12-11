@@ -113,7 +113,7 @@ public class HibernateDataAccess {
 		List<Ride> result = new ArrayList<Ride>();
 		try {
 			em.getTransaction().begin();
-			TypedQuery<Ride> query = em.createQuery("SELECT r FROM Ride r LEFT JOIN FETCH r.travellers WHERE r.from=:from AND r.to=:to AND r.date=:date", Ride.class); //JOIN travellers eskuratzeko
+			TypedQuery<Ride> query = em.createQuery("SELECT DISTINCT r FROM Ride r LEFT JOIN FETCH r.travellers WHERE r.from=:from AND r.to=:to AND r.date=:date", Ride.class); //JOIN FETCH travellers eskuratzeko
 			query.setParameter("from", from);
 			query.setParameter("to", to);
 			query.setParameter("date", date);

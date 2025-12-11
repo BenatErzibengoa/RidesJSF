@@ -13,7 +13,7 @@
 
 				<p:column headerText="Date">
 					<h:outputText value="#{ride.date}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Europe/Madrid" />
 					</h:outputText>
 				</p:column>
 				<p:column headerText="From">
@@ -47,7 +47,7 @@
 
 				<p:column headerText="Date">
 					<h:outputText value="#{ride.date}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Europe/Madrid" />
 					</h:outputText>
 				</p:column>
 				<p:column headerText="From">
@@ -61,12 +61,12 @@
 					style="text-align: center; width: 150px;"
 					rendered="#{user.traveler}">
 					<p:commandButton value="Rate Trip" icon="pi pi-star"
-						rendered="#{!myrides.hasRated(ride)}"
+						rendered="#{!(myrides.hasRated(ride))}"
 						styleClass="ui-button-warning"
 						actionListener="#{myrides.openRateDialog(ride)}"
 						update=":myRidesForm:rateDialog"
 						oncomplete="PF('rateDialog').show()" />
-					<h:outputText value="Rated" rendered="#{myrides.hasRated(ride)}"
+					<h:outputText value="Rated" rendered="#{(myrides.hasRated(ride))}"
 						style="color: green; font-weight: bold;" />
 				</p:column>
 
