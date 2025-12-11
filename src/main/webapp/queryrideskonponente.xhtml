@@ -6,24 +6,28 @@
 
 	<h:form id="queryForm">
 
+		<p:growl id="growl" showDetail="true" life="4000" />
+
 		<p:panel header="Search Available Rides"
 			styleClass="query-panel-margin">
 			<h:panelGrid columns="2" cellpadding="10">
 				<h:outputLabel value="Depart City:" styleClass="form-label" />
+				
 				<p:selectOneMenu id="originCombo"
 					value="#{queryrides.selectedOrigin}" styleClass="combo-box">
 					<f:selectItem itemLabel="Select City..." itemValue="" />
 					<f:selectItems value="#{queryrides.departCities}" />
 					<p:ajax listener="#{queryrides.onOriginChange}"
-						update="destinationCombo ridesTable messages" />
+						update="destinationCombo ridesTable growl" />
 				</p:selectOneMenu>
 
 				<h:outputLabel value="Arrival City:" styleClass="form-label" />
+				
 				<p:selectOneMenu id="destinationCombo"
 					value="#{queryrides.selectedDestination}" styleClass="combo-box">
 					<f:selectItem itemLabel="Select City..." itemValue="" />
 					<f:selectItems value="#{queryrides.destinationCities}" />
-					<p:ajax update="ridesTable messages" />
+					<p:ajax update="ridesTable growl" />
 				</p:selectOneMenu>
 
 				<h:outputLabel value="Ride Date:" styleClass="form-label" />
@@ -39,7 +43,8 @@
 			<br />
 			<p:commandButton value="Find Rides"
 				action="#{queryrides.searchRides}" icon="pi pi-search"
-				styleClass="ui-button-primary btn-wide" update="ridesTable" />
+				styleClass="ui-button-primary btn-wide" 
+				update="ridesTable growl" />
 		</p:panel>
 
 		<p:dataTable id="ridesTable" value="#{queryrides.foundRides}"
@@ -68,15 +73,19 @@
 
 			<p:column headerText="Availability"
 				style="width: 120px; text-align: center;">
+				
+				<h:outputText value="Booked" 
+        rendered="#{user.traveler and (queryrides.isRideBookedByCurrentUser(ride))}"
+        style="color: #2196F3; font-weight: bold; text-transform: uppercase;" />
 
 				<h:outputText value="FULL" rendered="#{ride.rideFull}"
 					style="color: red; font-weight: bold; font-weight: 900;" />
 
 				<p:commandButton value="Book"
 					action="#{queryrides.erreserbatu(ride)}"
-					update=":queryForm:ridesTable :queryForm:messages"
+					update=":queryForm:ridesTable :queryForm:growl"
 					icon="pi pi-check" styleClass="ui-button-success"
-					rendered="#{user.traveler and not ride.rideFull}" />
+					rendered="#{user.traveler and not ride.rideFull and not (queryrides.isRideBookedByCurrentUser(ride))}" />
 
 				<h:outputText value="Available"
 					rendered="#{user.driver and not ride.rideFull}"
@@ -94,23 +103,21 @@
 			</p:column>
 
 			<p:column headerText="Map">
-
 				<p:commandButton value="See route" icon="pi pi-map"
 					actionListener="#{queryrides.setSelectedRideForMap(ride)}"
 					update=":queryForm:mapDialog" oncomplete="PF('mapDialog').show()"
 					styleClass="ui-button-info" />
-
 			</p:column>
 
 		</p:dataTable>
+		
 		<p:dialog id="driverDialog" widgetVar="driverDialog" modal="true"
 			showEffect="fade" hideEffect="fade" resizable="false" width="800">
 
 			<p:outputPanel id="driverDetail" style="text-align:center;">
 				<h:panelGroup rendered="#{not empty queryrides.selectedDriver}">
 
-					<div
-						style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+					<div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
 						<h2 style="margin-top: 0">#{queryrides.selectedDriver.name} -
 							#{queryrides.getAverageRating()} / 5</h2>
 						<h:outputText value="#{queryrides.selectedDriver.email}"
@@ -150,9 +157,5 @@
 
 		</p:dialog>
 
-
-		<h:messages id="messages" globalOnly="true"
-			styleClass="global-messages" />
-
-	</h:form>
+		</h:form>
 </ui:composition>

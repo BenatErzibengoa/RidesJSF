@@ -24,7 +24,7 @@ public class MyRidesBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //Rides erakusteko
+    //My rides
     private List<Ride> futureRides;
     private List<Ride> pastRides;
     
@@ -33,7 +33,7 @@ public class MyRidesBean implements Serializable {
     private int ratingStars;
     private String ratingDescription;
     
-    //Traveller apuntatuta Ride batera
+    //Ride baten parte hartzaileak
     private List<Traveller> rideTravellers;
 
 

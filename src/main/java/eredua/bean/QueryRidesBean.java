@@ -78,14 +78,6 @@ public class QueryRidesBean implements Serializable {
             List<Ride> rides = facadeBL.getRides(selectedOrigin, selectedDestination, selectedDate);
             if(user.isLoggedIn() && user.getUser() != null && user.isTraveler()) {
             	String currentUserEmail = user.getEmail();
-            	rides.removeIf(ride -> {
-                    for (Traveller t : ride.getTravellers()) {
-                        if (t.getEmail().equals(currentUserEmail)) {
-                            return true; 
-                        }
-                    }
-                    return false;
-                });
             }
         	foundRides = rides;
 
@@ -98,6 +90,21 @@ public class QueryRidesBean implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "Please select origin, destination and date.", null));
         }
         return null; 
+    }
+    
+    public boolean isRideBookedByCurrentUser(Ride ride) {
+        if (user == null || !user.isLoggedIn() || user.getUser() == null) {
+            return false;
+        }
+        String currentUserEmail = user.getEmail();
+        if (ride.getTravellers() != null) {
+            for (Traveller t : ride.getTravellers()) {
+                if (t.getEmail().equals(currentUserEmail)) {
+                    return true; 
+                }
+            }
+        }
+        return false;
     }
 
     public void onOriginChange() {

@@ -73,10 +73,6 @@ public class HibernateDataAccess {
 		System.out.println(">> DataAccess: createRide=> from= "+from+" to= "+to+" driver="+driverEmail+" date "+date);
 		EntityManager em = JPAUtil.getEntityManager();
 		Ride ride = null;
-	        
-	        // Option 2: Stop execution if this is strictly logic
-	        // db.getTransaction().rollback();
-	        // throw new RuntimeException("Driver not found: " + driverEmail);
 		try {
 			if (new Date().compareTo(date) > 0) {
 				throw new RideMustBeLaterThanTodayException("Ride must be later than today!");
@@ -247,6 +243,9 @@ public class HibernateDataAccess {
             }
             return false;
         }
+        finally {
+        	em.close();
+        }
     }
     
     public List<Ride> getRidesByDriver(String driverEmail) {
@@ -397,7 +396,6 @@ public class HibernateDataAccess {
                 month = 1;
                 year += 1;
             }
-
             Driver driver1 = new Driver("d@gmail.com", "Aitor Fernandez", "d");
             Driver driver2 = new Driver("d2@gmail.com", "Ane Gaztañaga", "d");
             Driver driver3 = new Driver("d3@gmail.com", "Test driver", "d");
@@ -422,7 +420,6 @@ public class HibernateDataAccess {
             driver4.addRide("Zarautz", "Donostia", UtilDate.newDate(year, month, 20), 3, 2.5f);
             driver4.addRide("Donostia", "Madrid", UtilDate.newDate(year, month, 28), 2, 45.0f);
 
-            
             // ### Erabiltzaileek bidaiak egin dituztela simulatu ###
             // Abaltzisketa --> Urretxu (2 balorazio)
             Ride r1 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 6), 3, 7.5f);
@@ -435,7 +432,6 @@ public class HibernateDataAccess {
             r2_1.addTraveller(traveller1);
             r2_2.addTraveller(traveller1);
 
-            
             Rating rat1 = new Rating(r1, traveller1, 5, "Oso bidai lasaia, gomendagarria.");
             Rating rat2 = new Rating(r2, traveller2, 3, "Azkarregi gidatu zuen, beste dena oso ondo.");
 
