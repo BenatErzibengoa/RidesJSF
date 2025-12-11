@@ -1,23 +1,21 @@
 package eredua.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import businessLogic.BLFacade;
 import eredua.domain.Driver;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named("createride")
-@SessionScoped
+@ViewScoped
 public class CreateRideBean implements Serializable {
 
 	private String departCity;
