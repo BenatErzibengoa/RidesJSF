@@ -131,7 +131,7 @@ public class QueryRidesBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         
         if (!user.isLoggedIn() || user.getUser() == null) {
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+        	context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                 "Error", "User not logged in. Cannot proceed with booking."));
             return;
         }
