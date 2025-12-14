@@ -100,6 +100,12 @@ public class BLFacadeImplementation  implements BLFacade {
     	List<Traveller> ts = dbManager.getTravellersByRide(rideNumber);
     	return ts;
     }
+    
+    public List<Ride> getRidesByPrice(float price){
+    	List<Ride> rs = dbManager.getRidesByPrice(price);
+    	return rs;
+    }
+
 	 
 	 public void initializeBD(){
 		dbManager.initializeDB();

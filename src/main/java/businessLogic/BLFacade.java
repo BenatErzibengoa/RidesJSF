@@ -96,6 +96,9 @@ public interface BLFacade  {
     public boolean hasTravellerRatedRide(int rideNumber, String travellerEmail);
     
     public List<Traveller> getTravellersByRide(int rideNumber);
+    
+    public List<Ride> getRidesByPrice(float price);
+
 
     
 	

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Welcome - Ride Sharer</title>
+</h:head>
+
+<h:body style="background-color: #f0f3f6; padding: 20px;">
+
+	<h:form style="display: block; width: 400px; margin: 40px auto;">
+
+		<div style="text-align: center; margin-bottom: 15px;">
+			<h:graphicImage 
+				url="https://www.comparabus.com/bundles/static/uploads/Blablacar/blablabus-bus-blablacar-autocar-autobus.png"
+				alt="BlaBlaCar Logo"
+				style="width: 300px; height: auto;" 
+			/>
+		</div>
+
+		<p:panel header="Ride Sharer Access" style="text-align:center;">
+
+			<h3 style="margin-top: 0; color: #1e88e5;">Please introduce the desired price:</h3>
+			<p:separator style="margin: 15px 0;" />
+			
+			<h:outputLabel value="Price:" styleClass="form-label" />
+			
+			<h:inputText id="introducedPrice" value="#{preziobean.selectedPrice}"
+				required="true" requiredMessage="Insert Price"
+				converterMessage="Please enter a valid number (e.g. 10.5)">
+				
+				<f:convertNumber locale="en_US" />
+				
+				<f:validateDoubleRange minimum="0.0" />
+			</h:inputText>
+			
+			<h:message for="introducedPrice" styleClass="error-message" style="color: red; display: block; margin-top: 5px;"/>
+
+
+            <h:panelGroup layout="block" style="margin-bottom: 20px;">
+			
+			<p:commandButton value="Search"
+			    style="width:250px; padding:10px; margin-top: 10px;"
+			    styleClass="ui-button-primary"
+			    action="#{preziobean.loadRides}"
+			    update="@form"
+			    oncomplete="if (!args.validationFailed) window.location='preziorides.xhtml?faces-redirect=true'"/>
+		    
+		    <p:commandButton value="Back" action="main?faces-redirect=true"
+				icon="pi pi-arrow-left"
+				style="width:250px; padding:10px; margin-top: 10px;"
+				styleClass="ui-button-secondary" immediate="true" />
+
+			</h:panelGroup>
+
+			<p:separator style="margin: 20px 0;" />
+
+		</p:panel>
+	</h:form>
+
+</h:body>
+
+</html>

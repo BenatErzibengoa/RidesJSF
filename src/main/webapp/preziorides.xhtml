@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Welcome - Ride Sharer</title>
+</h:head>
+
+<h:body style="background-color: #f0f3f6; padding: 20px;">
+
+<h:form style="display: block; width: 800px; margin: 40px auto;">
+
+		<div style="text-align: center; margin-bottom: 15px;">
+			<h:graphicImage 
+				url="https://www.comparabus.com/bundles/static/uploads/Blablacar/blablabus-bus-blablacar-autocar-autobus.png"
+				alt="BlaBlaCar Logo"
+				style="width: 300px; height: auto;" 
+			/>
+		</div>
+
+		<p:panel header="Ride Sharer Access" style="text-align:center;">
+		
+		<p:dataTable value="#{preziobean.foundRides}" var="ride"
+				emptyMessage="No rides found for that price." border="1"
+				styleClass="rides-table">
+
+				<p:column headerText="DEPART CITY">
+					<h:outputText value="#{ride.from}" />
+				</p:column>
+				<p:column headerText="ARRIVAL CITY">
+					<h:outputText value="#{ride.to}" />
+				</p:column>
+				<p:column headerText="DRIVER EMAIL">
+					<h:outputText value="#{ride.driver.email}" />
+				</p:column>
+				<p:column headerText="RIDE DATE">
+					<h:outputText value="#{ride.date}" />
+				</p:column>
+				<p:column headerText="PRICE">
+					<h:outputText value="#{ride.price}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:separator style="margin: 20px 0;" />
+			
+			<h:outputText value="Number of rides found: #{(preziobean.foundRides.size())}" 
+                  style="font-weight:bold; display:block; margin-top:10px;" />
+			
+			<div style="text-align: center; margin-top: 20px;">
+				<p:commandButton value="Back"
+					action="preziobilaketa?faces-redirect=true" icon="pi pi-arrow-left"
+					style="width:250px; padding:10px;" styleClass="ui-button-secondary" />
+			</div>
+
+		</p:panel>
+	</h:form>
+
+</h:body>
+
+</html>

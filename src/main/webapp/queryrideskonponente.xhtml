@@ -78,8 +78,9 @@
         rendered="#{user.traveler and (queryrides.isRideBookedByCurrentUser(ride))}"
         style="color: #2196F3; font-weight: bold; text-transform: uppercase;" />
 
-				<h:outputText value="FULL" rendered="#{ride.rideFull}"
-					style="color: red; font-weight: bold; font-weight: 900;" />
+				<h:outputText value="FULL"
+				    rendered="#{ride.rideFull and not (queryrides.isRideBookedByCurrentUser(ride))}"
+				    style="color: red; font-weight: bold;" />
 
 				<p:commandButton value="Book"
 					action="#{queryrides.erreserbatu(ride)}"

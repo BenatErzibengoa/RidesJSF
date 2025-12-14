@@ -380,6 +380,33 @@ public class HibernateDataAccess {
         return travellers;
     }
     
+    
+    public List<Ride> getRidesByPrice(float price) {
+		System.out.println(">> DataAccess: getRidesByPrice: " + price);
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Ride> rides = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+            TypedQuery<Ride> query = em.createQuery(
+                "SELECT r FROM Ride r WHERE r.price = :price", 
+                Ride.class
+            );
+            query.setParameter("price", price);
+            rides = query.getResultList();
+            System.out.println("found: "+ rides);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return rides;
+    }
+
+    
   
     
     
@@ -416,9 +443,11 @@ public class HibernateDataAccess {
             driver2.addRide("Eibar", "Gasteiz", UtilDate.newDate(year, month, 6), 2, 5);
 
             driver3.addRide("Bilbo", "Donostia", UtilDate.newDate(year, month, 14), 1, 3);
+            driver3.addRide("Ondarroa", "Granada", UtilDate.newDate(year, month, 14), 1, 45.0f);
+
             
             driver4.addRide("Zarautz", "Donostia", UtilDate.newDate(year, month, 20), 3, 2.5f);
-            driver4.addRide("Donostia", "Madrid", UtilDate.newDate(year, month, 28), 2, 45.0f);
+            driver4.addRide("Donostia", "Madrid", UtilDate.newDate(year, month, 28), 1, 45.0f);
 
             // ### Erabiltzaileek bidaiak egin dituztela simulatu ###
             // Abaltzisketa --> Urretxu (2 balorazio)
@@ -428,6 +457,7 @@ public class HibernateDataAccess {
             Ride r2_2 = driver1.addRide("Abaltzisketa", "Urretxu", UtilDate.newDate(year, month, 8), 3, 7.5f);
 
             r1.addTraveller(traveller1);
+            r2.addTraveller(traveller1);
             r2.addTraveller(traveller2);
             r2_1.addTraveller(traveller1);
             r2_2.addTraveller(traveller1);
